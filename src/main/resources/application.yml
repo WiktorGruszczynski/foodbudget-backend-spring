@@ -8,11 +8,16 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
   jpa:
-    open-in-view: true
+    open-in-view: false
     show-sql: ${DEBUG_SQL:false}
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -20,7 +25,7 @@ spring:
 
   session:
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
       table-name: SPRING_SESSION
 
   mail:
@@ -34,6 +39,7 @@ spring:
           auth: true
           starttls:
             enable: true
+
 
 server:
   port: ${SERVER_PORT:8080}
