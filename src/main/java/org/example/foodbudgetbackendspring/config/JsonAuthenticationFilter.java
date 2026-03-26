@@ -1,5 +1,6 @@
 package org.example.foodbudgetbackendspring.config;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.foodbudgetbackendspring.user.dto.LoginRequest;
@@ -21,7 +22,8 @@ public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilt
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
+    @Nonnull
+    public Authentication attemptAuthentication(HttpServletRequest request, @Nonnull HttpServletResponse response){
         try {
             LoginRequest loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
             UsernamePasswordAuthenticationToken token =

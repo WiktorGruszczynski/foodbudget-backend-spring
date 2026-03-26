@@ -1,5 +1,6 @@
 package org.example.foodbudgetbackendspring.user;
 
+import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +14,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    @Nonnull
+    public UserDetails loadUserByUsername(@Nonnull String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .map(user -> org.springframework.security.core.userdetails.User
                         .withUsername(user.getEmail())
