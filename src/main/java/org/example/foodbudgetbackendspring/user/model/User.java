@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.user;
+package org.example.foodbudgetbackendspring.user.model;
 
 import jakarta.persistence.*;
 import lombok.Data;

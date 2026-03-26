@@ -1,5 +1,6 @@
-package org.example.foodbudgetbackendspring.user;
+package org.example.foodbudgetbackendspring.user.repository;
 
+import org.example.foodbudgetbackendspring.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

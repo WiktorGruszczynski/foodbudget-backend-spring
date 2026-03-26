@@ -1,7 +1,8 @@
-package org.example.foodbudgetbackendspring.user;
+package org.example.foodbudgetbackendspring.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.user.dto.RegisterRequest;
+import org.example.foodbudgetbackendspring.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

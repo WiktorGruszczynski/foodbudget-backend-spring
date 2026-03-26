@@ -1,7 +1,9 @@
-package org.example.foodbudgetbackendspring.user;
+package org.example.foodbudgetbackendspring.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.user.dto.RegisterRequest;
+import org.example.foodbudgetbackendspring.user.model.User;
+import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

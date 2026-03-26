@@ -1,7 +1,8 @@
-package org.example.foodbudgetbackendspring.user;
+package org.example.foodbudgetbackendspring.user.service;
 
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
+import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
