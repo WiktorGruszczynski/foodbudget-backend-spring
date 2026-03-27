@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,19 +26,27 @@ import java.util.List;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http){
         JsonAuthenticationFilter jsonFilter = new JsonAuthenticationFilter(
                 authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))
         );
 
-        jsonFilter.setAuthenticationSuccessHandler((request, response, authentication) -> response.setStatus(200));
-        jsonFilter.setAuthenticationFailureHandler((request, response, authentication) -> response.setStatus(401));
+        jsonFilter.setSecurityContextRepository(
+                new HttpSessionSecurityContextRepository()
+        );
+
+        jsonFilter.setAuthenticationSuccessHandler((
+                request, response, authentication) -> response.setStatus(200)
+        );
+        jsonFilter.setAuthenticationFailureHandler(
+                (request, response, authentication) -> response.setStatus(401)
+        );
 
         http
                 .addFilter(jsonFilter)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()   // TODO change to authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(logout -> logout
@@ -59,7 +68,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config){
         return config.getAuthenticationManager();
     }
 
@@ -68,7 +77,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of("http://localhost:5173"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
