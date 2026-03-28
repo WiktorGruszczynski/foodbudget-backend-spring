@@ -18,20 +18,21 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
     private final ProductDensityService productDensityService;
-
-    private boolean isProductNutrientUnitLiquid(Product product) {
-        return product.getNutrientUnit().equals(MeasurementUnit.MILLILITER);
-    }
+    private final ProductValidationService productValidationService;
 
     public ProductResponse addProduct(ProductRequest request) {
         Product product = productMapper.toEntity(request);
-        if (isProductNutrientUnitLiquid(product)) {
+        if (product.isNutrientUnitLiquid() && product.getDensity() == null) {
             product.setDensity(
                     productDensityService.getDensityByProductName(product.getName())
             );
         }
 
-        return productMapper.toResponse(productRepository.save(product));
+        return productMapper.toResponse(
+                productRepository.save(
+                        productValidationService.validate(product)
+                )
+        );
     }
 
     public ProductResponse updateProduct(Long id, ProductPatchRequest request) {
@@ -39,7 +40,9 @@ public class ProductService {
         productMapper.patch(product, request);
 
         return productMapper.toResponse(
-                productRepository.save(product)
+                productRepository.save(
+                        productValidationService.validate(product)
+                )
         );
     }
 

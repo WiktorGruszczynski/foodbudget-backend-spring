@@ -1,7 +1,6 @@
 package org.example.foodbudgetbackendspring.product.dto;
 
 import jakarta.validation.constraints.*;
-import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
 
 import java.math.BigDecimal;
 
@@ -11,9 +10,6 @@ public record ProductPatchRequest(
         String manufacturer,
 
         @Positive Float quantity,
-        MeasurementUnit quantityUnit,
-        MeasurementUnit nutrientUnit,
-
         @Positive Float density,
         @Positive Float energyKcal,
 

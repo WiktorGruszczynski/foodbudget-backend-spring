@@ -58,4 +58,8 @@ public class Product {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public boolean isNutrientUnitLiquid() {
+        return MeasurementUnit.MILLILITER.equals(this.nutrientUnit);
+    }
 }

@@ -37,8 +37,6 @@ public class ProductMapper {
         if (request.ean() != null) product.setEan(request.ean());
         if (request.manufacturer() != null) product.setManufacturer(request.manufacturer());
         if (request.quantity() != null) product.setQuantity(request.quantity());
-        if (request.quantityUnit() != null) product.setQuantityUnit(request.quantityUnit());
-        if (request.nutrientUnit() != null) product.setNutrientUnit(request.nutrientUnit());
         if (request.density() != null) product.setDensity(request.density());
         if (request.energyKcal() != null) product.setEnergyKcal(request.energyKcal());
         if (request.fat() != null) product.setFat(request.fat());
