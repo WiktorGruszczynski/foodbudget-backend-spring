@@ -45,18 +45,22 @@ public class Product {
     @Column(nullable = false)
     private Float fat;
 
+    @Column(nullable = false)
     private Float saturatedFat;
 
     @Column(nullable = false)
     private Float carbohydrates;
 
+    @Column(nullable = false)
     private Float sugars;
 
+    @Column(nullable = false)
     private Float fiber;
 
     @Column(nullable = false)
     private Float protein;
 
+    @Column(nullable = false)
     private Float salt;
 
     @Column(precision = 10, scale = 2)

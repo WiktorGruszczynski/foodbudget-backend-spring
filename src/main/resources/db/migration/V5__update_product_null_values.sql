@@ -1,0 +1,11 @@
+ALTER TABLE products
+    ALTER COLUMN fiber SET NOT NULL;
+
+ALTER TABLE products
+    ALTER COLUMN salt SET NOT NULL;
+
+ALTER TABLE products
+    ALTER COLUMN saturated_fat SET NOT NULL;
+
+ALTER TABLE products
+    ALTER COLUMN sugars SET NOT NULL;
