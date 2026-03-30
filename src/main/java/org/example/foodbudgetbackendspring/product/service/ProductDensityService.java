@@ -40,7 +40,7 @@ public class ProductDensityService {
 
         return MAPPING.entrySet().stream()
                 .filter(
-                        entry -> entry.getValue().stream().anyMatch(element -> element.contains(lowerName))
+                        entry -> entry.getValue().stream().anyMatch(lowerName::contains)
                 )
                 .map(Map.Entry::getKey)
                 .findFirst()
