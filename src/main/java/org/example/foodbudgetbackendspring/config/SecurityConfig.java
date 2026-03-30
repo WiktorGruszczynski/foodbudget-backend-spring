@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .addFilter(jsonFilter)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().permitAll()   // TODO change to authenticated()
+                        .anyRequest().authenticated()  // TODO change to authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(logout -> logout

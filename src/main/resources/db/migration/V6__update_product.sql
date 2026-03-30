@@ -1,0 +1,23 @@
+ALTER TABLE products
+    ADD is_global BOOLEAN DEFAULT false NOT NULL ;
+
+ALTER TABLE products
+    ADD owner_id BIGINT;
+
+ALTER TABLE products
+    ALTER COLUMN is_global SET NOT NULL;
+
+ALTER TABLE products
+    ADD CONSTRAINT FK_PRODUCTS_ON_OWNER FOREIGN KEY (owner_id) REFERENCES users (id);
+
+ALTER TABLE products
+    ALTER COLUMN fiber SET NOT NULL;
+
+ALTER TABLE products
+    ALTER COLUMN salt SET NOT NULL;
+
+ALTER TABLE products
+    ALTER COLUMN saturated_fat SET NOT NULL;
+
+ALTER TABLE products
+    ALTER COLUMN sugars SET NOT NULL;

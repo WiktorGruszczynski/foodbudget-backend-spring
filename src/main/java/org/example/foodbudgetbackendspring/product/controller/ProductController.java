@@ -7,7 +7,10 @@ import org.example.foodbudgetbackendspring.product.dto.ProductPatchRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductResponse;
 import org.example.foodbudgetbackendspring.product.service.ProductService;
+import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
+import org.example.foodbudgetbackendspring.user.model.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +23,13 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> addProduct(
-            @Valid @RequestBody ProductRequest request
+            @Valid @RequestBody ProductRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ){
         return ResponseEntity
                 .status(201)
                 .body(
-                        productService.addProduct(request)
+                        productService.addProduct(request, userDetails)
                 );
     }
 

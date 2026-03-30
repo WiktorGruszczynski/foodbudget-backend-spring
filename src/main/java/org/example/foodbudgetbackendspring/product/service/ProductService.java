@@ -7,6 +7,9 @@ import org.example.foodbudgetbackendspring.product.dto.ProductResponse;
 import org.example.foodbudgetbackendspring.product.mapper.ProductMapper;
 import org.example.foodbudgetbackendspring.product.model.Product;
 import org.example.foodbudgetbackendspring.product.repository.ProductRepository;
+import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
+import org.example.foodbudgetbackendspring.user.model.User;
+import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +19,16 @@ import java.util.List;
 public class ProductService {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
     private final ProductDensityService productDensityService;
     private final ProductValidationService productValidationService;
 
-    public ProductResponse addProduct(ProductRequest request) {
-        Product product = productMapper.toEntity(request);
+
+    public ProductResponse addProduct(ProductRequest request, CustomUserDetails userDetails) {
+        Product product = productMapper.toEntity(
+                request,
+                userRepository.getReferenceById(userDetails.getId())
+        );
 
         if (product.isNutrientUnitLiquid() && product.getDensity() == null) {
             product.setDensity(

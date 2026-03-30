@@ -4,6 +4,7 @@ import org.example.foodbudgetbackendspring.product.dto.ProductPatchRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductResponse;
 import org.example.foodbudgetbackendspring.product.model.Product;
+import org.example.foodbudgetbackendspring.user.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @Component
 public class ProductMapper {
-    public Product toEntity(ProductRequest request) {
+    public Product toEntity(ProductRequest request, User user) {
         Product product = new Product();
         product.setName(request.name());
         product.setEan(request.ean());
@@ -29,6 +30,7 @@ public class ProductMapper {
         product.setProtein(request.protein());
         product.setSalt(request.salt());
         product.setPrice(request.price());
+        product.setOwner(user);
         return product;
     }
 
