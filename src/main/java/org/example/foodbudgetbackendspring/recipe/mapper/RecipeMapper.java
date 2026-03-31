@@ -2,13 +2,11 @@ package org.example.foodbudgetbackendspring.recipe.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.product.repository.ProductRepository;
-import org.example.foodbudgetbackendspring.recipe.dto.IngredientRequest;
-import org.example.foodbudgetbackendspring.recipe.dto.IngredientResponse;
-import org.example.foodbudgetbackendspring.recipe.dto.RecipeRequest;
-import org.example.foodbudgetbackendspring.recipe.dto.RecipeResponse;
+import org.example.foodbudgetbackendspring.recipe.dto.*;
 import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @RequiredArgsConstructor
@@ -56,5 +54,18 @@ public class RecipeMapper {
                 recipe.getDescription(),
                 recipe.getIngredients().stream().map(this::toResponse).toList()
         );
+    }
+
+    public void patchRecipe(RecipePathRequest request, Recipe recipe) {
+        if (request.name() != null) recipe.setName(request.name());
+        if (request.description() != null) recipe.setDescription(request.description());
+
+        recipe.getIngredients().clear();
+
+        for (IngredientRequest ingredientRequest : request.ingredients()) {
+            recipe.addIngredient(
+                    toEntity(ingredientRequest)
+            );
+        }
     }
 }

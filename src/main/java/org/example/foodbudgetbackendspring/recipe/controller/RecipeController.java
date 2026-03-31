@@ -1,6 +1,7 @@
 package org.example.foodbudgetbackendspring.recipe.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.foodbudgetbackendspring.recipe.dto.RecipePathRequest;
 import org.example.foodbudgetbackendspring.recipe.dto.RecipeRequest;
 import org.example.foodbudgetbackendspring.recipe.service.RecipeService;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,13 @@ public class RecipeController {
                 .body(
                         recipeService.addRecipe(request)
                 );
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateRecipe(@PathVariable("id") Long id, @RequestBody RecipePathRequest request){
+        return ResponseEntity.ok(
+                recipeService.updateRecipe(id, request)
+        );
     }
 
     @GetMapping("/{id}")
