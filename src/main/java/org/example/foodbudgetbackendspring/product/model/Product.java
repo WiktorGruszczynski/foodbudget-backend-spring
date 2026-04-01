@@ -27,45 +27,45 @@ public class Product {
 
     // Measurements
     @Column(nullable = false)
-    private Float quantity;
+    private Float quantity = 0f;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MeasurementUnit quantityUnit;
+    private MeasurementUnit quantityUnit = MeasurementUnit.GRAM;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private MeasurementUnit nutrientUnit;
+    private MeasurementUnit nutrientUnit = MeasurementUnit.GRAM;
 
     private Float density;
 
     // Nutrients
     @Column(nullable = false)
-    private Float energyKcal;
+    private Float energyKcal = 0f;
 
     @Column(nullable = false)
-    private Float fat;
+    private Float fat = 0f;
 
     @Column(nullable = false)
-    private Float saturatedFat;
+    private Float saturatedFat = 0f;
 
     @Column(nullable = false)
-    private Float carbohydrates;
+    private Float carbohydrates = 0f;
 
     @Column(nullable = false)
-    private Float sugars;
+    private Float sugars = 0f;
 
     @Column(nullable = false)
-    private Float fiber;
+    private Float fiber = 0f;
 
     @Column(nullable = false)
-    private Float protein;
+    private Float protein = 0f;
 
     @Column(nullable = false)
-    private Float salt;
+    private Float salt = 0f;
 
     @Column(precision = 10, scale = 2)
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id")
@@ -88,5 +88,57 @@ public class Product {
 
     public boolean isNutrientUnitLiquid() {
         return MeasurementUnit.MILLILITER.equals(this.nutrientUnit);
+    }
+
+    public void resetQuantity() {
+        this.quantity = 0f;
+    }
+
+    public void resetNutrients() {
+        this.energyKcal = 0f;
+        this.fat = 0f;
+        this.saturatedFat = 0f;
+        this.carbohydrates = 0f;
+        this.sugars = 0f;
+        this.fiber = 0f;
+        this.protein = 0f;
+        this.salt = 0f;
+        this.price = new BigDecimal(0);
+    }
+
+    /**
+     * Adds raw nutrient values based on the ingredient's quantity.
+     * WARNING: This method leaves the product in an intermediate state (total sum).
+     * Always call {@link #applyScaling(float)} after the calculation loop to normalize to 100g.
+     */
+    public void addNutrientsFrom(Product otherProduct, float quantity){
+        float ratio = quantity / 100f;
+
+        this.quantity += quantity;
+        this.energyKcal += otherProduct.getEnergyKcal() * ratio;
+        this.fat += otherProduct.getFat() * ratio;
+        this.saturatedFat += otherProduct.getSaturatedFat() * ratio;
+        this.carbohydrates += otherProduct.getCarbohydrates() * ratio;
+        this.sugars += otherProduct.getSugars() * ratio;
+        this.fiber += otherProduct.getFiber() * ratio;
+        this.protein += otherProduct.getProtein() * ratio;
+        this.salt += otherProduct.getSalt() * ratio;
+
+        if (otherProduct.getPrice() != null) {
+            this.price = this.price.add(
+                    otherProduct.getPrice().multiply(BigDecimal.valueOf(ratio))
+            );
+        }
+    }
+
+    public void applyScaling(float factor) {
+        this.energyKcal *= factor;
+        this.protein *= factor;
+        this.fat *= factor;
+        this.carbohydrates *= factor;
+        this.sugars *= factor;
+        this.saturatedFat *= factor;
+        this.fiber *= factor;
+        this.salt *= factor;
     }
 }
