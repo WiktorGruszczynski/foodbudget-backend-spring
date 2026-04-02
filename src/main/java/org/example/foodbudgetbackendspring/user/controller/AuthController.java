@@ -1,6 +1,7 @@
 package org.example.foodbudgetbackendspring.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.foodbudgetbackendspring.user.dto.PasswordResetRequest;
 import org.example.foodbudgetbackendspring.user.dto.RegisterRequest;
 import org.example.foodbudgetbackendspring.user.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +29,17 @@ public class AuthController {
     public ResponseEntity<?> resendVerificationCode(@RequestParam String email){
         userService.resendVerificationCode(email);
         return ResponseEntity.ok("Email resent");
+    }
+
+    @PostMapping("/send-password-reset-code")
+    public ResponseEntity<?> sendPasswordResetCode(@RequestParam String email){
+        userService.sendPasswordResetEmail(email);
+        return ResponseEntity.ok("Email sent");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPasswordWithVerificationCode(@RequestParam PasswordResetRequest request){
+        userService.resetPassword(request);
+        return ResponseEntity.ok("Password reset successful");
     }
 }

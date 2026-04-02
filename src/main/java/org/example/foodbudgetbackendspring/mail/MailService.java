@@ -47,4 +47,19 @@ public class MailService {
             System.err.println("Could not send registration email: " + e.getMessage());
         }
     }
+
+    public void sendPasswordResetEmail(@Nonnull String to, @Nonnull String verificationCode){
+        try {
+            Context context = new Context();
+            context.setVariable("verification_code", verificationCode);
+
+            sendEmail(
+                    to,
+                    "Password reset",
+                    templateEngine.process("password-reset-email", context)
+            );
+        } catch (Exception e) {
+            System.err.println("Could not send password reset email: " + e.getMessage());
+        }
+    }
 }

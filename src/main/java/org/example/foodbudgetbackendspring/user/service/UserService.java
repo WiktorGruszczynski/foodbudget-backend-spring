@@ -3,6 +3,7 @@ package org.example.foodbudgetbackendspring.user.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.mail.MailService;
+import org.example.foodbudgetbackendspring.user.dto.PasswordResetRequest;
 import org.example.foodbudgetbackendspring.user.dto.RegisterRequest;
 import org.example.foodbudgetbackendspring.user.model.User;
 import org.example.foodbudgetbackendspring.user.model.VerificationCode;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +24,18 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
 
-    private String generateVerificationCode(){
+    private String generateVerificationCodeString(){
         return String.valueOf(
                 new SecureRandom().nextInt(900_000) + 100_000
         );
+    }
+
+    private VerificationCode generateVerificationCodeObject(User user){
+        VerificationCode verificationCode = new VerificationCode();
+        verificationCode.setCode(generateVerificationCodeString());
+        verificationCode.setUser(user);
+        verificationCode.setExpiryDate(LocalDateTime.now().plusMinutes(15));
+        return verificationCode;
     }
 
     @Transactional
@@ -46,10 +56,7 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
         userRepository.save(user);
 
-        VerificationCode verificationCode = new VerificationCode();
-        verificationCode.setCode(generateVerificationCode());
-        verificationCode.setUser(user);
-        verificationCode.setExpiryDate(LocalDateTime.now().plusMinutes(15));
+        VerificationCode verificationCode = generateVerificationCodeObject(user);
         verificationCodeRepository.save(verificationCode);
 
         mailService.sendRegistrationEmail(
@@ -87,7 +94,7 @@ public class UserService {
                 .findByUserId(user.getId())
                 .orElseThrow(() -> new RuntimeException("Invalid verification code"));
 
-        verificationCode.setCode(generateVerificationCode());
+        verificationCode.setCode(generateVerificationCodeString());
         verificationCode.setExpiryDate(LocalDateTime.now().plusMinutes(15));
         verificationCodeRepository.save(verificationCode);
 
@@ -95,5 +102,48 @@ public class UserService {
                 user.getEmail(),
                 verificationCode.getCode()
         );
+    }
+
+
+    public void sendPasswordResetEmail(String email){
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        VerificationCode code = generateVerificationCodeObject(user);
+        verificationCodeRepository.save(code);
+
+        mailService.sendPasswordResetEmail(
+                email,
+                code.getCode()
+        );
+    }
+
+    @Transactional
+    public void resetPassword(PasswordResetRequest request) {
+        VerificationCode verificationCode = verificationCodeRepository
+                .findByCode(request.code())
+                .orElseThrow(() -> new RuntimeException("Invalid verification code"));
+
+        if (verificationCode.isExpired()){
+            throw new RuntimeException("Expired verification code");
+        }
+
+        if (!verificationCode.getCode().equals(request.code())){
+            throw new RuntimeException("Invalid verification code");
+        }
+
+        Optional<User> userOptional = userRepository.findByEmail(request.email());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            user.setPassword(
+                    passwordEncoder.encode(request.newPassword())
+            );
+
+            userRepository.save(user);
+            verificationCodeRepository.delete(verificationCode);
+        }
     }
 }
