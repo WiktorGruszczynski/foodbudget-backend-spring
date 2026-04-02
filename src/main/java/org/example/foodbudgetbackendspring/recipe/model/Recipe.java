@@ -28,7 +28,7 @@ public class Recipe {
     @JoinColumn(name = "user_id")
     private User owner;
 
-    @OneToOne(mappedBy = "recipe")
+    @OneToOne(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Product product;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)

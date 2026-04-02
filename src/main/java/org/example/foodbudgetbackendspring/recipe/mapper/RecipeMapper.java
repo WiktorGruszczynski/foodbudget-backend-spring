@@ -7,6 +7,8 @@ import org.example.foodbudgetbackendspring.recipe.dto.*;
 import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
 import org.example.foodbudgetbackendspring.recipe.service.IngredientValidationService;
+import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
+import org.example.foodbudgetbackendspring.user.model.User;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -37,16 +39,15 @@ public class RecipeMapper {
                 ingredient.getProduct().getId(),
                 ingredient.getQuantity(),
                 ingredient.getUnit(),
-                BigDecimal.valueOf(
-                        ingredient.getQuantity() / product.getQuantity() * product.getPrice().doubleValue()
-                )
+                ingredient.getPrice()
         );
     }
 
-    public Recipe toEntity(RecipeRequest request) {
+    public Recipe toEntity(RecipeRequest request, User user) {
         Recipe recipe = new Recipe();
         recipe.setName(request.name());
         recipe.setDescription(request.description());
+        recipe.setOwner(user);
 
         for (IngredientRequest ingredientRequest : request.ingredients()) {
             recipe.addIngredient(

@@ -10,6 +10,8 @@ import org.example.foodbudgetbackendspring.recipe.mapper.RecipeMapper;
 import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
 import org.example.foodbudgetbackendspring.recipe.repository.RecipeRepository;
+import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
+import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeMapper recipeMapper;
+    private final UserRepository userRepository;
 
     private void createOrUpdateProductFromRecipe(Recipe recipe) {
         Product product = recipe.getProduct();
@@ -25,6 +28,7 @@ public class RecipeService {
         if (product == null) {
             product = new Product();
             product.setOwner(recipe.getOwner());
+            product.setRecipe(recipe);
             recipe.setProduct(product);
         }
 
@@ -33,11 +37,7 @@ public class RecipeService {
         product.resetNutrients();
 
         for (Ingredient ingredient : recipe.getIngredients()) {
-            product.addNutrientsFrom(
-                    ingredient.getProduct(),
-                    ingredient.getQuantity(),
-                    ingredient.getUnit()
-            );
+            product.addNutrientsFrom(ingredient);
         }
 
         float totalWeight = product.getQuantity();
@@ -49,9 +49,9 @@ public class RecipeService {
 
 
     @Transactional // TODO - optimize amount of inserts in the future
-    public RecipeResponse addRecipe(RecipeRequest request) {
+    public RecipeResponse addRecipe(RecipeRequest request, CustomUserDetails userDetails) {
         Recipe recipe = recipeRepository.save(
-                recipeMapper.toEntity(request)
+                recipeMapper.toEntity(request, userRepository.getReferenceById(userDetails.getId()))
         );
 
         // This db call is needed in order to retrieve all related objects
@@ -72,6 +72,7 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findByIdWithIngredientsAndProducts(id).orElseThrow(
                 () -> new RuntimeException("Recipe not found")
         );
+
 
         recipeMapper.patchRecipe(request, recipe);
         createOrUpdateProductFromRecipe(recipe);

@@ -3,6 +3,7 @@ package org.example.foodbudgetbackendspring.product.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
 import org.example.foodbudgetbackendspring.user.model.User;
 import org.hibernate.annotations.CreationTimestamp;
@@ -111,15 +112,16 @@ public class Product {
      * WARNING: This method leaves the product in an intermediate state (total sum).
      * Always call {@link #applyScaling(float)} after the calculation loop to normalize to 100g.
      */
-    public void addNutrientsFrom(Product otherProduct, float quantity, MeasurementUnit unit){
-        float massInGrams = quantity;
+    public void addNutrientsFrom(Ingredient ingredient){
+        Product otherProduct = ingredient.getProduct();
+        float massInGrams = ingredient.getQuantity();
 
-        if (unit.equals(MeasurementUnit.MILLILITER)) {
+        if (ingredient.getUnit().equals(MeasurementUnit.MILLILITER)) {
             if (otherProduct.getDensity() == null) {
                 throw new IllegalStateException("NULL density for liquid product");
             }
 
-            massInGrams = quantity * otherProduct.getDensity();
+            massInGrams *= otherProduct.getDensity();
         }
 
         float ratio = massInGrams / 100f;
@@ -134,14 +136,17 @@ public class Product {
         this.protein += otherProduct.getProtein() * ratio;
         this.salt += otherProduct.getSalt() * ratio;
 
+
         if (otherProduct.getPrice() != null) {
             this.price = this.price.add(
-                    otherProduct.getPrice().multiply(BigDecimal.valueOf(ratio))
+                    ingredient.getPrice()
             );
         }
     }
 
     public void applyScaling(float factor) {
+        System.out.println("SÓl");
+        System.out.println(this.salt);
         this.energyKcal *= factor;
         this.protein *= factor;
         this.fat *= factor;

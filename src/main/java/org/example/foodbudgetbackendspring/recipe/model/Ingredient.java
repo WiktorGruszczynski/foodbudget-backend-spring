@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
 import org.example.foodbudgetbackendspring.product.model.Product;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "ingredients")
 @Data
@@ -29,4 +31,10 @@ public class Ingredient {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public BigDecimal getPrice() {
+        return BigDecimal.valueOf(
+                quantity / product.getQuantity() * product.getPrice().doubleValue()
+        );
+    }
 }
