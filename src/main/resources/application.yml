@@ -51,3 +51,9 @@ server:
         secure: false # false = http, true = https
         max-age: 7d
     context-path: /api
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

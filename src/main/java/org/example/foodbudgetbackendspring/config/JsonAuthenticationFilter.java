@@ -4,9 +4,12 @@ import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.foodbudgetbackendspring.user.dto.LoginRequest;
+import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import tools.jackson.databind.ObjectMapper;
 
@@ -28,7 +31,16 @@ public class JsonAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             UsernamePasswordAuthenticationToken token =
                     new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password());
 
-            return getAuthenticationManager().authenticate(token);
+            Authentication auth = getAuthenticationManager().authenticate(token);
+
+            if (auth.getPrincipal() instanceof UserDetails userDetails) {
+                System.out.println(userDetails.isEnabled());
+                if (!userDetails.isEnabled()) {
+                    throw new DisabledException("User is disabled");
+                }
+            }
+
+            return auth;
 
         } catch (IOException e) {
             throw new RuntimeException(e);

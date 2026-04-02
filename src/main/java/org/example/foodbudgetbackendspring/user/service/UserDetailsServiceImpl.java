@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
 import org.example.foodbudgetbackendspring.user.model.User;
 import org.example.foodbudgetbackendspring.user.repository.UserRepository;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
+                user.isEnabled(),
                 List.of(
                         new SimpleGrantedAuthority("ROLE_" + user.getRole())
                 )
