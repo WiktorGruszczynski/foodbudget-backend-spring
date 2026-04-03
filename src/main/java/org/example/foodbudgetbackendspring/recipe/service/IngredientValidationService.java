@@ -13,9 +13,9 @@ public class IngredientValidationService {
         Product product = ingredient.getProduct();
         MeasurementUnit unit = ingredient.getUnit();
 
-        if (unit == MeasurementUnit.MILLILITER && product.getDensity() == null) {
+        if (product.isSolid() && unit.equals(MeasurementUnit.MILLILITER)) {
             throw new ValidationException(
-                    "Product " + product.getName() + " cannot be measured in ML without density value"
+                    "Solid product " + product.getName() + " cannot be measured in ML"
             );
         }
     }

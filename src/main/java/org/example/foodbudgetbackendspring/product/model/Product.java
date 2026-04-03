@@ -91,6 +91,10 @@ public class Product {
         return MeasurementUnit.MILLILITER.equals(this.nutrientUnit);
     }
 
+    public boolean isSolid(){
+        return this.nutrientUnit.equals(MeasurementUnit.GRAM) && this.quantityUnit.equals(MeasurementUnit.GRAM);
+    }
+
     public void resetQuantity() {
         this.quantity = 0f;
     }
@@ -145,8 +149,6 @@ public class Product {
     }
 
     public void applyScaling(float factor) {
-        System.out.println("SÓl");
-        System.out.println(this.salt);
         this.energyKcal *= factor;
         this.protein *= factor;
         this.fat *= factor;

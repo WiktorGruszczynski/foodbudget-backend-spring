@@ -1,5 +1,6 @@
 package org.example.foodbudgetbackendspring.recipe.service;
 
+import jakarta.validation.ValidationException;
 import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
 import org.example.foodbudgetbackendspring.product.model.Product;
 import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
@@ -9,14 +10,17 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class IngredientValidationServiceTest {
+    private final IngredientValidationService service = new IngredientValidationService();
 
     @Test
-    void validateTestNullDensity() {
+    void shouldThrowExceptionWhenLiquidUnitPassedForSolidProduct() {
         Product product = TestDataFactory.createTestProduct();
-        product.setDensity(null);
-        product.setNutrientUnit(MeasurementUnit.MILLILITER);
+        product.setQuantityUnit(MeasurementUnit.GRAM);
+        product.setNutrientUnit(MeasurementUnit.GRAM);
 
         Ingredient ingredient = TestDataFactory.createTestIngredient(product);
         ingredient.setUnit(MeasurementUnit.MILLILITER);
+
+        assertThrows(ValidationException.class, () -> service.validate(ingredient));
     }
 }
