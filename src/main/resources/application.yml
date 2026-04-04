@@ -52,8 +52,3 @@ server:
         max-age: 7d
     context-path: /api
 
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
