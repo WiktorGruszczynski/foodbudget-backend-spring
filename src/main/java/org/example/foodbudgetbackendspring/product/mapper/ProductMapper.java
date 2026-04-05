@@ -20,7 +20,6 @@ public class ProductMapper {
         product.setQuantity(request.quantity());
         product.setQuantityUnit(request.quantityUnit());
         product.setNutrientUnit(request.nutrientUnit());
-        product.setDensity(request.density());
         product.setEnergyKcal(request.energyKcal());
         product.setFat(request.fat());
         product.setSaturatedFat(request.saturatedFat());
@@ -60,7 +59,6 @@ public class ProductMapper {
                 product.getQuantity(),
                 product.getQuantityUnit(),
                 product.getNutrientUnit(),
-                product.getDensity(),
                 product.getEnergyKcal(),
                 product.getFat(),
                 product.getSaturatedFat(),

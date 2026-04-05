@@ -53,10 +53,21 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts(
-            @RequestParam(value = "query") @Size(min = 3, message = "Query must be at least 3 characters long") String query
+            @RequestParam(value = "query") @Size(min=3, message="Query is too short") String query,
+            @RequestParam(value = "hasRecipe", required = false) Boolean hasRecipe,
+            @RequestParam(value = "isGlobal", required = false) Boolean isGlobal
     ){
         return ResponseEntity.ok(
-                productService.getProducts(query)
+                productService.getProducts(query, hasRecipe, isGlobal)
+        );
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<ProductResponse>> getUserProducts(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ){
+        return ResponseEntity.ok(
+                productService.getUserProducts(userDetails.getId())
         );
     }
 }

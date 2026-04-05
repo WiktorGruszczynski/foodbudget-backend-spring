@@ -9,6 +9,7 @@ import org.example.foodbudgetbackendspring.product.model.Product;
 import org.example.foodbudgetbackendspring.product.repository.ProductRepository;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
 import org.example.foodbudgetbackendspring.user.repository.UserRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,9 +62,19 @@ public class ProductService {
         );
     }
 
-   public List<ProductResponse> getProducts(String query) {
+   public List<ProductResponse> getProducts(String query, Boolean hasRecipe, Boolean isGlobal) {
         return productMapper.toResponseList(
-                productRepository.findByNameContainingIgnoreCase(query)
+                productRepository.findProductsByCriteria(
+                        query,
+                        hasRecipe,
+                        isGlobal
+                )
         );
    }
+
+    public @Nullable List<ProductResponse> getUserProducts(Long id) {
+        return productMapper.toResponseList(
+                productRepository.findProductsByOwnerId(id)
+        );
+    }
 }
