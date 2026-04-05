@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.mail.MailService;
 import org.example.foodbudgetbackendspring.user.dto.PasswordResetRequest;
 import org.example.foodbudgetbackendspring.user.dto.RegisterRequest;
+import org.example.foodbudgetbackendspring.user.dto.VerifyCodeRequest;
 import org.example.foodbudgetbackendspring.user.model.User;
 import org.example.foodbudgetbackendspring.user.model.VerificationCode;
 import org.example.foodbudgetbackendspring.user.model.VerificationType;
@@ -151,10 +152,22 @@ public class AuthService {
         );
 
         user.setPassword(
-                passwordEncoder.encode(request.newPassword())
+                passwordEncoder.encode(request.password())
         );
 
         userRepository.save(user);
         verificationCodeRepository.delete(verificationCode);
+    }
+
+    public void verifyCode(VerifyCodeRequest request){
+        User user = userRepository
+                .findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException(VERIFICATION_ERROR_MESSAGE));
+
+        validateVerificationCode(
+                request.code(),
+                user,
+                request.type()
+        );
     }
 }

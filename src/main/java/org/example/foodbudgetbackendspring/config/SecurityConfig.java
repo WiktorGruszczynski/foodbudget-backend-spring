@@ -45,6 +45,7 @@ public class SecurityConfig {
         http
                 .addFilter(jsonFilter)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/validate-session").authenticated()
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )

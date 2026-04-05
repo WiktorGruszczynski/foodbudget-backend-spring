@@ -3,9 +3,6 @@ package org.example.foodbudgetbackendspring.user.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.foodbudgetbackendspring.recipe.model.Recipe;
-
-import java.util.List;
 
 
 @Entity
@@ -32,7 +29,4 @@ public class User {
     public enum Role {
         USER, ADMIN
     }
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Recipe> recipes;
 }
