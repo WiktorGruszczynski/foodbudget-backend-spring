@@ -1,13 +1,16 @@
 package org.example.foodbudgetbackendspring.recipe.dto;
 
 
-import jakarta.annotation.Nonnull;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 public record RecipeRequest(
-        @Nonnull String name,
-        @Nonnull String description,
-        @Nonnull List<IngredientRequest> ingredients
+        @NotNull String name,
+        @NotNull String description,
+        @Valid @NotEmpty List<IngredientRequest> ingredients
 ) {
 }

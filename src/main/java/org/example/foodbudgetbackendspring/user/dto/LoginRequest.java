@@ -1,6 +1,6 @@
 package org.example.foodbudgetbackendspring.user.dto;
 
-import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
-public record LoginRequest(@Nonnull String email, @Nonnull String password) {
+public record LoginRequest(@NotNull String email, @NotNull String password) {
 }

@@ -52,7 +52,9 @@ public class RecipeService {
     @Transactional // TODO - optimize amount of inserts in the future
     public RecipeResponse addRecipe(RecipeRequest request, CustomUserDetails userDetails) {
         Recipe recipe = recipeRepository.save(
-                recipeMapper.toEntity(request, userRepository.getReferenceById(userDetails.getId()))
+                recipeMapper.toEntity(
+                        request, userRepository.getReferenceById(userDetails.getId())
+                )
         );
 
         // This db call is needed in order to retrieve all related objects

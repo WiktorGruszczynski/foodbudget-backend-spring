@@ -1,7 +1,9 @@
 package org.example.foodbudgetbackendspring.user.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public record PasswordResetRequest (
-        String email,
-        String password,
-        String code
+        @NotNull String email,
+        @NotNull String password,
+        @NotNull String code
 ){ }
