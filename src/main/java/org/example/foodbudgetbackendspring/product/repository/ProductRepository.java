@@ -7,9 +7,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE " +
             "(:query IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))) AND " +
             "(:hasRecipe IS NULL OR (:hasRecipe = true AND p.recipe IS NOT NULL) OR (:hasRecipe = false AND p.recipe IS NULL)) AND " +
@@ -20,5 +21,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("isGlobal") Boolean isGlobal
     );
 
-    List<Product> findProductsByOwnerId(Long id);
+    List<Product> findProductsByOwnerId(UUID id);
 }

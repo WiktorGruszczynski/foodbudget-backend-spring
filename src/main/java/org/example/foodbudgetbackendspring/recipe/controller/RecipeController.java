@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/recipe")
 @RequiredArgsConstructor
@@ -28,14 +30,14 @@ public class RecipeController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateRecipe(@PathVariable("id") Long id, @RequestBody RecipePathRequest request){
+    public ResponseEntity<?> updateRecipe(@PathVariable("id") UUID id, @RequestBody RecipePathRequest request){
         return ResponseEntity.ok(
                 recipeService.updateRecipe(id, request)
         );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getRecipe(@PathVariable Long id){
+    public ResponseEntity<?> getRecipe(@PathVariable UUID id){
         return ResponseEntity.ok(
                 recipeService.getRecipe(id)
         );

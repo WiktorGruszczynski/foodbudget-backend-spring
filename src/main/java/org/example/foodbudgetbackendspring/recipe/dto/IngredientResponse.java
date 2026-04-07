@@ -4,9 +4,10 @@ import org.example.foodbudgetbackendspring.product.dto.ProductResponse;
 import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public record IngredientResponse(
-        Long id,
+        UUID id,
         ProductResponse product,
         Float quantity,
         MeasurementUnit unit,

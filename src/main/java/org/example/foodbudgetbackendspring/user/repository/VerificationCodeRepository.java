@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface VerificationCodeRepository extends JpaRepository<VerificationCode, Long> {
-    Optional<VerificationCode> findByCodeAndUserId(String code, Long userId);
+public interface VerificationCodeRepository extends JpaRepository<VerificationCode, UUID> {
+    Optional<VerificationCode> findByCodeAndUserId(String code, UUID userId);
 
     @Modifying
     @Transactional

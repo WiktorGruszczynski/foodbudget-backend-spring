@@ -13,6 +13,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,7 @@ public class ProductService {
         );
     }
 
-    public ProductResponse updateProduct(Long id, ProductPatchRequest request) {
+    public ProductResponse updateProduct(UUID id, ProductPatchRequest request) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         productMapper.patch(product, request);
 
@@ -54,7 +55,7 @@ public class ProductService {
         );
     }
 
-    public ProductResponse getProductById(Long id) {
+    public ProductResponse getProductById(UUID id) {
         return productMapper.toResponse(
                 productRepository.findById(id).orElseThrow(
                         () -> new RuntimeException("Product with id " + id + " not found")
@@ -72,7 +73,7 @@ public class ProductService {
         );
    }
 
-    public @Nullable List<ProductResponse> getUserProducts(Long id) {
+    public @Nullable List<ProductResponse> getUserProducts(UUID id) {
         return productMapper.toResponseList(
                 productRepository.findProductsByOwnerId(id)
         );

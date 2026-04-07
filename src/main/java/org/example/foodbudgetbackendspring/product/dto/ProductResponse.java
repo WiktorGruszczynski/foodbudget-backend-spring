@@ -6,9 +6,10 @@ import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record ProductResponse(
-        Long id,
+        UUID id,
         String name,
         String ean,
         String manufacturer,

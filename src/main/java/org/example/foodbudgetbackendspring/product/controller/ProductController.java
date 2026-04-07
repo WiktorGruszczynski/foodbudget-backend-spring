@@ -13,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
@@ -34,7 +35,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProductById(
-            @PathVariable("id") Long id
+            @PathVariable("id") UUID id
     ){
         return ResponseEntity.ok(
                 productService.getProductById(id)
@@ -43,7 +44,7 @@ public class ProductController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponse> updateProduct(
-            @PathVariable("id") Long id,
+            @PathVariable("id") UUID id,
             @RequestBody ProductPatchRequest request
     ){
         return ResponseEntity.ok(

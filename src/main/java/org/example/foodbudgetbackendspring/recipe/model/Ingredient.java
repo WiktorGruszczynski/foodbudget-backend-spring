@@ -7,6 +7,7 @@ import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
 import org.example.foodbudgetbackendspring.product.model.Product;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "ingredients")
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false)
     private Float quantity;

@@ -14,6 +14,8 @@ import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
@@ -67,7 +69,7 @@ public class RecipeService {
     }
 
     @Transactional
-    public RecipeResponse updateRecipe(Long id, RecipePathRequest request) {
+    public RecipeResponse updateRecipe(UUID id, RecipePathRequest request) {
         Recipe recipe = recipeRepository.findByIdWithIngredientsAndProducts(id).orElseThrow(
                 () -> new RuntimeException("Recipe not found")
         );
@@ -82,7 +84,7 @@ public class RecipeService {
     }
 
     @Transactional(readOnly = true)
-    public RecipeResponse getRecipe(Long id) {
+    public RecipeResponse getRecipe(UUID id) {
         return recipeMapper.toResponse(
                 recipeRepository
                         .findByIdWithIngredientsAndProducts(id)
