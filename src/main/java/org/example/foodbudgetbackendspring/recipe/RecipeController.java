@@ -1,9 +1,8 @@
-package org.example.foodbudgetbackendspring.recipe.controller;
+package org.example.foodbudgetbackendspring.recipe;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.recipe.dto.RecipePathRequest;
 import org.example.foodbudgetbackendspring.recipe.dto.RecipeRequest;
-import org.example.foodbudgetbackendspring.recipe.service.RecipeService;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.user.service;
+package org.example.foodbudgetbackendspring.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -9,8 +9,6 @@ import org.example.foodbudgetbackendspring.user.dto.VerifyCodeRequest;
 import org.example.foodbudgetbackendspring.user.model.User;
 import org.example.foodbudgetbackendspring.user.model.VerificationCode;
 import org.example.foodbudgetbackendspring.user.model.VerificationType;
-import org.example.foodbudgetbackendspring.user.repository.UserRepository;
-import org.example.foodbudgetbackendspring.user.repository.VerificationCodeRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

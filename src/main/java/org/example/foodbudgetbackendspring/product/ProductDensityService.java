@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.product.service;
+package org.example.foodbudgetbackendspring.product;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ProductDensityService {
+class ProductDensityService {
     private static final float STANDARD = 1.0f;
     private static final float OIL = 0.92f;
     private static final float SAUCE = 1.15f;

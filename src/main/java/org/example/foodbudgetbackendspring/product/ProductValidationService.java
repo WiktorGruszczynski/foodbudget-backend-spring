@@ -1,11 +1,11 @@
-package org.example.foodbudgetbackendspring.product.service;
+package org.example.foodbudgetbackendspring.product;
 
 import jakarta.validation.ValidationException;
 import org.example.foodbudgetbackendspring.product.model.Product;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductValidationService {
+class ProductValidationService {
     private boolean isValidEANChecksum(String ean){
         int sum = 0;
         int length = ean.length();

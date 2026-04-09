@@ -1,10 +1,9 @@
-package org.example.foodbudgetbackendspring.user.service;
+package org.example.foodbudgetbackendspring.user;
 
 import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
 import org.example.foodbudgetbackendspring.user.model.User;
-import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

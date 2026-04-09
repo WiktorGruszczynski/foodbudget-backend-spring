@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.user.controller;
+package org.example.foodbudgetbackendspring.user;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

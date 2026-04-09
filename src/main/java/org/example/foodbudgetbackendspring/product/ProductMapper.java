@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.product.mapper;
+package org.example.foodbudgetbackendspring.product;
 
 import org.example.foodbudgetbackendspring.product.dto.ProductPatchRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductRequest;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProductMapper {
+class ProductMapper {
     public Product toEntity(ProductRequest request, User user) {
         Product product = new Product();
         product.setName(request.name());

@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.recipe.service;
+package org.example.foodbudgetbackendspring.recipe;
 
 import jakarta.validation.ValidationException;
 import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class IngredientValidationService {
+class IngredientValidationService {
     private void validateUnits(Ingredient ingredient) {
         Product product = ingredient.getProduct();
         MeasurementUnit unit = ingredient.getUnit();

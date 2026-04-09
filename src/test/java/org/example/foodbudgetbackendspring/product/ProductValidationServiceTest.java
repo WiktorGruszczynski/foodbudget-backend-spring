@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.product.service;
+package org.example.foodbudgetbackendspring.product;
 
 import jakarta.validation.ValidationException;
 import org.example.foodbudgetbackendspring.product.model.MeasurementUnit;

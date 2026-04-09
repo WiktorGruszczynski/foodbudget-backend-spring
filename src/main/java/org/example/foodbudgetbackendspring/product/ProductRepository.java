@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.product.repository;
+package org.example.foodbudgetbackendspring.product;
 
 import org.example.foodbudgetbackendspring.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, UUID> {
+interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE " +
             "(:query IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :query, '%'))) AND " +
             "(:hasRecipe IS NULL OR (:hasRecipe = true AND p.recipe IS NOT NULL) OR (:hasRecipe = false AND p.recipe IS NULL)) AND " +

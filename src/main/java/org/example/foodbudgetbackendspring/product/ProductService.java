@@ -1,15 +1,12 @@
-package org.example.foodbudgetbackendspring.product.service;
+package org.example.foodbudgetbackendspring.product;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.product.dto.ProductPatchRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductResponse;
-import org.example.foodbudgetbackendspring.product.mapper.ProductMapper;
 import org.example.foodbudgetbackendspring.product.model.Product;
-import org.example.foodbudgetbackendspring.product.repository.ProductRepository;
+import org.example.foodbudgetbackendspring.user.UserService;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
-import org.example.foodbudgetbackendspring.user.repository.UserRepository;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,15 +17,22 @@ import java.util.UUID;
 public class ProductService {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ProductDensityService productDensityService;
     private final ProductValidationService productValidationService;
 
+    public Product getProductReference(UUID id) {
+        return productRepository.getReferenceById(id);
+    }
+
+    public ProductResponse mapToResponse(Product product) {
+        return productMapper.toResponse(product);
+    }
 
     public ProductResponse addProduct(ProductRequest request, CustomUserDetails userDetails) {
         Product product = productMapper.toEntity(
                 request,
-                userRepository.getReferenceById(userDetails.getId())
+                userService.getUserReference(userDetails.getId())
         );
 
         if (product.isNutrientUnitLiquid() && product.getDensity() == null) {

@@ -1,21 +1,18 @@
-package org.example.foodbudgetbackendspring.recipe.mapper;
+package org.example.foodbudgetbackendspring.recipe;
 
 import lombok.RequiredArgsConstructor;
-import org.example.foodbudgetbackendspring.product.mapper.ProductMapper;
-import org.example.foodbudgetbackendspring.product.repository.ProductRepository;
+import org.example.foodbudgetbackendspring.product.ProductService;
 import org.example.foodbudgetbackendspring.recipe.dto.*;
 import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
-import org.example.foodbudgetbackendspring.recipe.service.IngredientValidationService;
 import org.example.foodbudgetbackendspring.user.model.User;
 import org.springframework.stereotype.Component;
 
 
 @Component
 @RequiredArgsConstructor
-public class RecipeMapper {
-    private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
+class RecipeMapper {
+    private final ProductService productService;
     private final IngredientValidationService ingredientValidationService;
 
     private Ingredient toEntity(IngredientRequest ingRequest){
@@ -23,7 +20,7 @@ public class RecipeMapper {
         ingredient.setQuantity(ingRequest.quantity());
         ingredient.setUnit(ingRequest.unit());
         ingredient.setProduct(
-                productRepository.getReferenceById(ingRequest.productId())
+                productService.getProductReference(ingRequest.productId())
         );
 
         return ingredient;
@@ -32,7 +29,7 @@ public class RecipeMapper {
     private IngredientResponse toResponse(Ingredient ingredient){
         return new IngredientResponse(
                 ingredient.getId(),
-                productMapper.toResponse(
+                productService.mapToResponse(
                         ingredient.getProduct()
                 ),
                 ingredient.getQuantity(),

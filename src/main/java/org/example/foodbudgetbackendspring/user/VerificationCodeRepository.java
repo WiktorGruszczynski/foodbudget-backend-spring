@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.user.repository;
+package org.example.foodbudgetbackendspring.user;
 
 import jakarta.transaction.Transactional;
 import org.example.foodbudgetbackendspring.user.model.VerificationCode;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface VerificationCodeRepository extends JpaRepository<VerificationCode, UUID> {
+interface VerificationCodeRepository extends JpaRepository<VerificationCode, UUID> {
     Optional<VerificationCode> findByCodeAndUserId(String code, UUID userId);
 
     @Modifying

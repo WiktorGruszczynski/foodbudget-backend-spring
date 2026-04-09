@@ -1,11 +1,10 @@
-package org.example.foodbudgetbackendspring.user.controller;
+package org.example.foodbudgetbackendspring.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.user.dto.AuthResponse;
 import org.example.foodbudgetbackendspring.user.dto.PasswordResetRequest;
 import org.example.foodbudgetbackendspring.user.dto.RegisterRequest;
 import org.example.foodbudgetbackendspring.user.dto.VerifyCodeRequest;
-import org.example.foodbudgetbackendspring.user.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

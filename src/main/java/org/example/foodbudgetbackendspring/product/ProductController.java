@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.product.controller;
+package org.example.foodbudgetbackendspring.product;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.product.dto.ProductPatchRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductRequest;
 import org.example.foodbudgetbackendspring.product.dto.ProductResponse;
-import org.example.foodbudgetbackendspring.product.service.ProductService;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

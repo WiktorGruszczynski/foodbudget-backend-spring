@@ -1,4 +1,4 @@
-package org.example.foodbudgetbackendspring.recipe.repository;
+package org.example.foodbudgetbackendspring.recipe;
 
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
+interface RecipeRepository extends JpaRepository<Recipe, UUID> {
 
     @Query("SELECT r FROM Recipe r " +
             "LEFT JOIN FETCH r.ingredients i " +

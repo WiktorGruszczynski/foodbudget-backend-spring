@@ -1,16 +1,14 @@
-package org.example.foodbudgetbackendspring.recipe.service;
+package org.example.foodbudgetbackendspring.recipe;
 
 import lombok.RequiredArgsConstructor;
 import org.example.foodbudgetbackendspring.product.model.Product;
 import org.example.foodbudgetbackendspring.recipe.dto.RecipePathRequest;
 import org.example.foodbudgetbackendspring.recipe.dto.RecipeRequest;
 import org.example.foodbudgetbackendspring.recipe.dto.RecipeResponse;
-import org.example.foodbudgetbackendspring.recipe.mapper.RecipeMapper;
 import org.example.foodbudgetbackendspring.recipe.model.Ingredient;
 import org.example.foodbudgetbackendspring.recipe.model.Recipe;
-import org.example.foodbudgetbackendspring.recipe.repository.RecipeRepository;
+import org.example.foodbudgetbackendspring.user.UserService;
 import org.example.foodbudgetbackendspring.user.model.CustomUserDetails;
-import org.example.foodbudgetbackendspring.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +19,7 @@ import java.util.UUID;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final RecipeMapper recipeMapper;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private void createOrUpdateProductFromRecipe(Recipe recipe) {
         Product product = recipe.getProduct();
@@ -53,7 +51,8 @@ public class RecipeService {
     public RecipeResponse addRecipe(RecipeRequest request, CustomUserDetails userDetails) {
         Recipe recipe = recipeRepository.save(
                 recipeMapper.toEntity(
-                        request, userRepository.getReferenceById(userDetails.getId())
+                        request,
+                        userService.getUserReference(userDetails.getId())
                 )
         );
 
