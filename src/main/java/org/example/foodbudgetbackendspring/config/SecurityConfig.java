@@ -43,11 +43,10 @@ public class SecurityConfig {
 
         jsonFilter.setAuthenticationSuccessHandler((
                 request, response, authentication) -> {
-                    Cookie isAuthCookie = new Cookie("is_auth", "true");
+                    Cookie isAuthCookie = new Cookie("AUTHENTICATED", "true");
                     isAuthCookie.setHttpOnly(false);
                     isAuthCookie.setPath("/");
                     isAuthCookie.setMaxAge((int) sessionMaxAge.getSeconds());
-
                     response.addCookie(isAuthCookie);
 
                     response.setStatus(200);
@@ -67,6 +66,15 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .addLogoutHandler((request, response, authentication) -> {
+
+                            Cookie authCookie = new Cookie("AUTHENTICATED", null);
+                            authCookie.setPath("/");
+                            authCookie.setMaxAge(0);
+                            response.addCookie(authCookie);
+                        })
                         .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
