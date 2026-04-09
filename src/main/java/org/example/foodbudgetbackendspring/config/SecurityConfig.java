@@ -1,6 +1,8 @@
 package org.example.foodbudgetbackendspring.config;
 
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.time.Duration;
 import java.util.List;
 
 
@@ -24,6 +27,9 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    @Value("${server.servlet.session.cookie.max-age:7d}")
+    private Duration sessionMaxAge;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http){
@@ -36,7 +42,16 @@ public class SecurityConfig {
         );
 
         jsonFilter.setAuthenticationSuccessHandler((
-                request, response, authentication) -> response.setStatus(200)
+                request, response, authentication) -> {
+                    Cookie isAuthCookie = new Cookie("is_auth", "true");
+                    isAuthCookie.setHttpOnly(false);
+                    isAuthCookie.setPath("/");
+                    isAuthCookie.setMaxAge((int) sessionMaxAge.getSeconds());
+
+                    response.addCookie(isAuthCookie);
+
+                    response.setStatus(200);
+                }
         );
         jsonFilter.setAuthenticationFailureHandler(
                 (request, response, authentication) -> response.setStatus(401)
