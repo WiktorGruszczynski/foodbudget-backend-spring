@@ -19,6 +19,7 @@ class MealMapper {
 
     public MealItemResponse mealItemToResponse(MealItem mealItem){
         return new MealItemResponse(
+                mealItem.getId(),
                 productService.mapToResponse(
                         mealItem.getProduct()
                 ),

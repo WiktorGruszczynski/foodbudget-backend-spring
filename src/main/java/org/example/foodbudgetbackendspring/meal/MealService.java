@@ -19,6 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MealService {
     private final MealRepository mealRepository;
+    private final MealItemRepository mealItemRepository;
     private final MealMapper mealMapper;
     private final UserService userService;
 
@@ -60,5 +61,10 @@ public class MealService {
                         .getMealItems()
                         .getLast()
         );
+    }
+
+    public void removeMealItem(UUID mealItemId, UUID userId){
+        Optional<MealItem> mealItemOptional = mealItemRepository.findByIdAndUserId(mealItemId, userId);
+        mealItemOptional.ifPresent(mealItemRepository::delete);
     }
 }
